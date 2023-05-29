@@ -2,8 +2,8 @@ import { columns } from "./columns"
 import { TableData } from "./tableData"
 import { Skeleton } from "@/components/ui/skeleton"
 import dynamic from 'next/dynamic';
-const d3 = dynamic(() => import("d3"), {ssr: false});
-const GaugeComponent = dynamic(() => import("react-gauge-component"), {ssr: false});
+// const d3 = dynamic(() => import("d3"), {ssr: false});
+// const GaugeComponent = dynamic(() => import("react-gauge-component"), {ssr: false});
 
 async function getData(): Promise<Client[]> {
 	const res = await fetch("https://dummyjson.com/users")
