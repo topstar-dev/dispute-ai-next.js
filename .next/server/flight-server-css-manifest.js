@@ -5,6 +5,8 @@ self.__RSC_CSS_MANIFEST={
     ]
   },
   "cssModules": {
-    "/Users/freddy/Documents/Projects/Side Projects/dispute-ai/app/clients/page": []
+    "/Users/freddy/Documents/Projects/Side Projects/dispute-ai/app/clients/page": [
+      "/Users/freddy/Documents/Projects/Side Projects/dispute-ai/app/globals.css"
+    ]
   }
 }
