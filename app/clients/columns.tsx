@@ -1,71 +1,11 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-
-export type Client = {
-	id: number
-	firstName: string
-	lastName: string
-	maidenName: string
-	age: number
-	gender: "male" | "female" | "other"
-	email: string
-	phone: string
-	username: string
-	password: string
-	birthDate: string
-	image: string
-	bloodGroup: string
-	height: number
-	weight: number
-	eyeColor: string
-	hair: {
-		color: string
-		type: string
-	}
-	domain: string
-	ip: string
-	address: {
-		address: string
-		city: string
-		coordinates: {
-			lat: number
-			lng: number
-		}
-		postalCode: string
-		state: string
-	}
-	macAddress: string
-	university: string
-	bank: {
-		cardExpire: string
-		cardNumber: string
-		cardType: string
-		currency: string
-		iban: string
-	}
-	company: {
-		address: {
-			address: string
-			city: string
-			coordinates: {
-				lat: number
-				lng: number
-			}
-			postalCode: string
-			state: string
-		}
-		department: string
-		name: string
-		title: string
-	}
-	ein: string
-	ssn: string
-	userAgent: string
-}
+import { Client } from "@/typings"
+import { create, useStore } from "zustand"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useClientStore } from "@/store/useClientStore"
 
 export const columns: ColumnDef<Client>[] = [
 	{
@@ -85,11 +25,7 @@ export const columns: ColumnDef<Client>[] = [
 		cell: ({ row }) => {
 			const first = row.original.firstName
 			const last = row.original.lastName
-			return (
-				<div className=" max-w-[15rem]">
-					{ `${first} ${last}`}
-				</div>
-			)
+			return <div className=" max-w-[15rem]">{`${first} ${last}`}</div>
 		},
 	},
 	{
@@ -110,27 +46,18 @@ export const columns: ColumnDef<Client>[] = [
 		},
 		cell: ({ row }) => {
 			const payment = row.original
+			const setcurrentClientId = useClientStore((state) => state.setcurrentClientId)
 
 			return (
 				<div className="flex justify-end">
 					<div className="relative -left-2">
-						<DropdownMenu classs="bg-white">
-							<DropdownMenuTrigger asChild>
-								<Button variant="ghost" className="h-8 w-8 p-0 hover:bg-white/10">
-									<span className="sr-only">Open menu</span>
-									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6">
-										<path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-									</svg>
-								</Button>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent className="bg-[#3c3c3c] text-white" align="end">
-								{/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-								<DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>Copy payment ID</DropdownMenuItem>
-								{/* <DropdownMenuSeparator /> */}
-								<DropdownMenuItem>View customer</DropdownMenuItem>
-								<DropdownMenuItem>View payment details</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
+						<Button onClick={() => setcurrentClientId(payment.id - 1)} variant="ghost" className="h-8 w-8 p-0 hover:bg-white/10">
+							<span className="sr-only">Open menu</span>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+								<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+							</svg>
+						</Button>
 					</div>
 				</div>
 			)
