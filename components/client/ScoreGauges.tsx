@@ -6,9 +6,17 @@ import { ExperianSVG } from "../svg/ExperianSVG"
 import { TransUnionSVG } from "../svg/TransUnionSVG"
 import { Skeleton } from "@/components/ui/skeleton"
 import dynamic from "next/dynamic"
+import { useClientStore } from "@/store/useClientStore"
 const GaugeComponent = dynamic(() => import("react-gauge-component"), { ssr: false })
 
 export function ScoreGauges({ data }) {
+	const currentClientId = useClientStore((state) => state.currentClientId)
+	const isLoading = useClientStore((state) => state.isLoading)
+
+	const handleIntroAnimation = () => {
+		setTimeout(() => {}, 3000)
+	}
+
 	const profileScores = {
 		transUnion: {
 			score: 800,
@@ -25,7 +33,7 @@ export function ScoreGauges({ data }) {
 		profileScores: {
 			...profileScores,
 		},
-		...data[0],
+		...data[currentClientId],
 	}
 
 	const creditRanges = [
@@ -74,6 +82,7 @@ export function ScoreGauges({ data }) {
 		pointer: {
 			type: "blob",
 			width: 20,
+			// animate: false,
 		},
 	}
 
@@ -95,7 +104,7 @@ export function ScoreGauges({ data }) {
 		const date = new Date(dateString)
 		const options = { month: "short", day: "numeric", year: "numeric" }
 		const formattedDate = date.toLocaleDateString("en-US", options)
-		return formattedDate
+		return "Last updated: " + formattedDate
 	}
 
 	const bureaus = [
@@ -117,15 +126,27 @@ export function ScoreGauges({ data }) {
 	]
 
 	return (
+		!isLoading &&
 		<>
-			<h1 className="h-10 text-3xl">{`${client.firstName} ${client.lastName}`}</h1>
+			<h1 className={`h-10 text-3xl ${currentClientId !== null ? null : "w-80 animate-pulse rounded-md bg-white/10 text-transparent"}`}>{`${client.firstName} ${client.lastName}`}</h1>
 			<div className="grid h-auto grid-cols-3 gap-5">
 				{bureaus.map((bureau) => (
 					<div key={bureau.name} className="flex flex-col items-center [&>:first-child]:-mb-4">
-						{bureau.svgComponent}
-						<GaugeComponent {...createGaugeOptions(bureau.clientScore, bureau.name)} />
-						<p className="relative -top-3 text-xs">{getCreditRange(bureau.clientScore)}</p>
-						<p className="text-xs">Last updated: {formatDate(client.birthDate)}</p>
+						<div className={`relative flex w-full justify-center ${currentClientId !== null ? null : "relative top-3 [&>svg]:h-8 [&>svg]:rounded-md [&>svg]:bg-white/10 [&>svg]:opacity-0"}`}>
+							{currentClientId === null && <div className={`absolute inset-0 inset-x-10 animate-pulse rounded-md bg-white/10 `}></div>}
+							{bureau.svgComponent}
+						</div>
+						<div className={`h-36 w-full`}>
+							{currentClientId === null  ? (
+								<div className="relative h-36 w-full">
+									<div className="absolute left-[34px] top-10 my-auto h-20 w-[70%] scale-95 animate-pulse rounded-t-full bg-white/10"></div>
+								</div>
+							) : (
+								<GaugeComponent {...createGaugeOptions(bureau.clientScore, bureau.name)} />
+							)}
+						</div>
+						<p className={`relative -top-3 text-xs ${currentClientId !== null ? null : "mt-5 h-4 w-24 animate-pulse rounded-md bg-white/10"}`}>{currentClientId !== null && getCreditRange(bureau.clientScore)}</p>
+						<p className={`${currentClientId !== null ? null : "h-4 w-36 animate-pulse rounded-md bg-white/10"} text-xs`}>{currentClientId !== null && formatDate(client.birthDate)}</p>
 					</div>
 				))}
 			</div>
