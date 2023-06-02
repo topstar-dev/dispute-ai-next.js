@@ -3,12 +3,12 @@
 import { ScoreGauges } from "@/components/client/ScoreGauges"
 import { TableData } from "./TableData"
 import { columns } from "./columns"
-import { useClientStore } from "@/store/useClientStore"
+import { useAppStore } from "@/store/useAppStore"
 import { useEffect } from "react"
 
 export default function ClientContainer() {
-	const getClients = useClientStore((state) => state.getClients)
-	const clients = useClientStore((state) => state.clients)
+	const getClients = useAppStore((state) => state.getClients)
+	const clients = useAppStore((state) => state.clients)
 
 	useEffect(() => {
 		getClients()

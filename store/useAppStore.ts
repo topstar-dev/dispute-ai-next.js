@@ -3,16 +3,16 @@ import { Client } from "@/typings"
 import { create } from "zustand"
 
 type ClientStore = {
-	currentClientId: number | null
+	currentUserId: number | null
 	isLoading: boolean
 	error: null
-	clients: Client[] | null
+	clients: any[] | null
 	getClients: () => void
-	setcurrentClientId: (id: number) => void
+	setcurrentUserId: (id: number) => void
 }
 
-export const useClientStore = create<ClientStore>((set) => ({
-	currentClientId: null,
+export const useAppStore = create<ClientStore>((set) => ({
+	currentUserId: null,
 	isLoading: true,
 	error: null,
 	clients: [],
@@ -24,7 +24,7 @@ export const useClientStore = create<ClientStore>((set) => ({
 			set({ error: err.message, isLoading: false })
 		}
 	},
-	setcurrentClientId: (id) => {
-		set({ currentClientId: id })
+	setcurrentUserId: (id) => {
+		set({ currentUserId: id })
 	},
 }))

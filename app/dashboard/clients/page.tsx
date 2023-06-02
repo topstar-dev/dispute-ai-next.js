@@ -1,6 +1,6 @@
 import ClientContainer from "./ClientContainer"
 
-export default async function DemoPage() {
+export default async function ClientPage() {
 	return (
 		<>
 			<ClientContainer />
