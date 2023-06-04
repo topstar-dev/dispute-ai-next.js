@@ -16,17 +16,11 @@ export default function LoginPage() {
 			.then((account) => {
 				router.push("/dashboard")
 			})
-			.catch((error) => {
-				router.push("/login")
-			})
+			.catch((error) => {})
 	}, [])
 
 	return (
-		<div className="flex h-full w-screen flex-col items-center justify-center gap-6 text-white">
-			<div className="flex text-5xl">
-				<p className="font-black tracking-wide">Dispute</p>
-				<p className="font-xs font-light">Ai</p>
-			</div>
+		<div className="flex h-screen w-screen flex-col items-center justify-center gap-6 overflow-y-hidden  bg-[#14141f] text-white">
 			<LoginForm />
 		</div>
 	)
