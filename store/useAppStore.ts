@@ -1,18 +1,20 @@
 import getAllClients from "@/lib/getAllClients"
-import { Client } from "@/typings"
+import { Client, User } from "@/typings"
 import { create } from "zustand"
 
 type ClientStore = {
 	currentUserId: number | null
+	currentUser: number | null
 	isLoading: boolean
 	error: null
 	clients: any[] | null
 	getClients: () => void
-	setcurrentUserId: (id: number) => void
+	setcurrentUserId: (user: User) => void
 }
 
 export const useAppStore = create<ClientStore>((set) => ({
 	currentUserId: null,
+	currentUser: null,
 	isLoading: true,
 	error: null,
 	clients: [],
@@ -26,5 +28,8 @@ export const useAppStore = create<ClientStore>((set) => ({
 	},
 	setcurrentUserId: (id) => {
 		set({ currentUserId: id })
+	},
+	setCurrentUser: (user: User) => {
+		set({ currentUser: user })
 	},
 }))
